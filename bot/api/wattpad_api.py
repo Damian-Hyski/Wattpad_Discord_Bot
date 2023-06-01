@@ -1,3 +1,5 @@
+import logging
+
 import requests
 
 
@@ -8,6 +10,8 @@ class WattpadAPI:
         self.payload = ''
         self.headers = {'User-Agent': ''}
 
+        self.logger = logging.getLogger('discord.wattpad.api')
+
     def get_user_data(self, user_name: str):
         url = self.base_url + f'/api/v3/users/{user_name}'
         try:
@@ -16,7 +20,7 @@ class WattpadAPI:
             data = response.json()
             return data
         except requests.exceptions.RequestException as e:
-            print(str(e))
+            self.logger.error(str(e))
             return None
 
     def get_stories_data(self, user_name: str):
@@ -25,9 +29,9 @@ class WattpadAPI:
             response = requests.request("GET", url, data=self.payload, headers=self.headers, params=self.querystring)
             response.raise_for_status()
             data = response.json()
-            return data
+            return data['stories']
         except requests.exceptions.RequestException as e:
-            print(str(e))
+            self.logger.error(str(e))
             return None
 
     def get_message_data(self, user_name: str):
@@ -36,7 +40,7 @@ class WattpadAPI:
             response = requests.request("GET", url, data=self.payload, headers=self.headers, params=self.querystring)
             response.raise_for_status()
             data = response.json()
-            return data
+            return data['messages']
         except requests.exceptions.RequestException as e:
-            print(str(e))
+            self.logger.error(str(e))
             return None

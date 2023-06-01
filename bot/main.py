@@ -39,4 +39,4 @@ class WattpadDiscordBot(commands.Bot):
 
 if __name__ == '__main__':
     bot = WattpadDiscordBot()
-    bot.run(DC_TOKEN)
+    bot.run(DC_TOKEN, root_logger=True)
